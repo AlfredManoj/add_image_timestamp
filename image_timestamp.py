@@ -1,3 +1,4 @@
+import datetime
 import cv2
 import os
 from PIL import Image
@@ -14,12 +15,22 @@ def load_images_from_folder(folder):
     return images
 
 
+date_entry = input('Enter a date in YYYY-MM-DD format')
+year, month, day = map(int, date_entry.split('-'))
+time_entry = input('Enter the time in 24 hour format hh:mm')
+hour, minute = map(int, time_entry.split(':'))
+user_given_datetime = datetime.datetime(year, month, day, hour, minute)
+
 image_folder_path = os.path.join(os.getcwd(), "Images")
 result_folder_path = os.path.join(os.getcwd(), "Result")
 if not os.path.exists(image_folder_path):
     os.mkdir(image_folder_path)
 if not os.path.exists(result_folder_path):
     os.mkdir(result_folder_path)
+
+# we are assuming that only 3 images will be taken in one minute
+# so any image list containing more than 3 images will have auto-incremented timeline
+total_images = 0
 
 image_list = load_images_from_folder(image_folder_path)
 for image in image_list:
@@ -34,8 +45,16 @@ for image in image_list:
 
     (x, y) = img.size
 
+    increment_value = total_images // 3
+    computed_datetime = user_given_datetime + datetime.timedelta(minutes=increment_value)
+
+    # datetime_string = computed_datetime.strftime("%Y/%-m/%d %H:%M")
+    datetime_string = '{d.year}/{d.month}/{d.day} {d.hour:02}:{d.minute:02}'.format(d=computed_datetime)
     # Add Text to an image
-    I1.text((10, y-35), "2024/4/25  09:41", font=myFont, fill=(255, 255, 255))
+    I1.text((10, y-35), datetime_string, font=myFont, fill=(255, 255, 255))
+
+    # increment total image count
+    total_images += 1
 
     # Display edited image
     # img.show()
