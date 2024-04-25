@@ -1,4 +1,3 @@
-import os
 import cv2
 import os
 from PIL import Image
@@ -17,6 +16,10 @@ def load_images_from_folder(folder):
 
 image_folder_path = os.path.join(os.getcwd(), "Images")
 result_folder_path = os.path.join(os.getcwd(), "Result")
+if not os.path.exists(image_folder_path):
+    os.mkdir(image_folder_path)
+if not os.path.exists(result_folder_path):
+    os.mkdir(result_folder_path)
 
 image_list = load_images_from_folder(image_folder_path)
 for image in image_list:
