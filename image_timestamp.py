@@ -1,6 +1,7 @@
 import datetime
 import cv2
 import os
+import shutil
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -25,8 +26,14 @@ image_folder_path = os.path.join(os.getcwd(), "Images")
 result_folder_path = os.path.join(os.getcwd(), "Result")
 if not os.path.exists(image_folder_path):
     os.mkdir(image_folder_path)
-if not os.path.exists(result_folder_path):
-    os.mkdir(result_folder_path)
+if os.path.exists(result_folder_path):
+    shutil.rmtree(result_folder_path)
+os.mkdir(result_folder_path)
+
+# clear result folder each time
+# shutil.rmtree(result_folder_path)
+# for file in os.listdir(result_folder_path):
+
 
 # we are assuming that only 3 images will be taken in one minute
 # so any image list containing more than 3 images will have auto-incremented timeline
